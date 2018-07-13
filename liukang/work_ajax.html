@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax获取商品</title>
+    <link rel="stylesheet" href="css/work_ajax.css">
+</head>
+<body>
+    <table class="box"  border="1" style="border-collapse: collapse;width:590px;">
+        <tr>
+            <td>id</td>
+            <td>name</td>
+            <td>price</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+            
+        
+    </table>
+
+    <div class="cover">
+			<div class="layer">
+                <div class="title">您确定删除吗</div>
+                <div class="content"></div>
+                <div class="bot">
+                    <button class="closeBtn">确认</button>
+                    <button class="cancelBtn">取消</button>
+                </div>
+                
+			</div>			
+	</div>
+
+
+    <script>
+
+    
+
+                var xhr=new XMLHttpRequest();
+                xhr.open('GET','json/ajax.json',true);
+                xhr.send(null);
+                xhr.onreadystatechange=function(){
+                    var jsons = xhr.responseText;
+                     json = JSON.parse(jsons);
+                    if(xhr.readyState==4&&xhr.status==200){
+                        insert(json);
+                        
+                    }
+                    
+                };
+
+        
+
+            function insert(json) {
+
+                var box = document.querySelector('.box');
+                var td = document.querySelectorAll('td');
+                var tr = document.querySelectorAll('tr');
+                for(var i = 0; i < json.length; i++){
+                    
+                   td[i+4].innerHTML = json[i].id
+                   td[i+5].innerHTML = json[i].name;
+                   td[i+6].innerHTML = json[i].price;
+                   td[i+6].innerHTML = '<button>删除</button>';
+                    // var item = "<tr>"+"<td>" + json[i].id + "</td>"+"<td>" + json[i].name + "</td>"+"<td>" + json[i].price + "</td>"+"<td>" +"<button>"+"删除"+"</button>"+"</td>"+"</tr>" 
+                    tr.append(td);
+                    box.append(tr);
+                }
+               
+            }
+
+
+        
+			var $title = document.querySelector('.title');
+            var $layer = document.querySelector('.layer');
+            
+
+			$title.onmousedown = function(ev) {
+				
+				ev = ev || window.event;
+
+				var offsetX = ev.clientX - $title.offsetLeft;
+				var offsetY = ev.clientY - $title.offsetTop;
+				document.onmousemove = function(ev) {
+					ev= ev || window.event;
+					$layer.style.left = ev.clientX - offsetX + 'px';
+					$layer.style.top = ev.clientY - offsetY+ 'px';
+					
+				}
+			}
+
+			document.onmouseup = function() {
+				document.onmousemove = null;
+            }
+            
+            var $del = document.querySelectorAll('.del')[0];
+
+            $del.onclick = function(){
+                $layer.style.display = 'block';
+            }
+    </script>
+</body>
+</html>
